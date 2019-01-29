@@ -1,0 +1,177 @@
+pickup weapon/shield
+
+- press E if weapon/shield do the playpickup anim in the Pawn class
+-PickupAnim()
+	-
+
+
+------------------------------------------------------------
+-----------------------------------------------------------
+when player is X units close to an actor
+- see if its a weapon, shield, potion, key, etc
+- check bHasRoom if needed
+- trace to the actor, if distance is < Y pickup 
+- if weapon is out, sheith it
+- attach actor to right hand
+- if quickactor, use right away
+- if not quickactor, put away ( play anim ), hide actor
+- update inventory rooms
+- hide actor
+- set actor's state to inhand so its physics can be _NONE
+
+return?//////1111
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+
+inventory ntoes.....
+
+	Scroll up - Shields
+	Scroll down - Weapons
+	C ( or what other key ) - Items
+
+
+selection mechanics ( weapons and shields )
+
+WHEN PLAYER SCROLLS UP OR DOWN.....
+
+-check if player is alive / player.health is greater than 0 or 1
+
+	look in the shield/weapon inventory system and look in the main array variable
+		when scrolling up look in BladeShieldInventory
+		when scrolling down look in BladeWeaponInventory
+
+	look in ARRAY(0)-wepaon/shield, ARRAY(1)-weapon/shield, ARRAY(2)-NULL( means only has 2 weapons/shields)
+		get the class for each weapon/shield
+			get class'WEAPON/SHIELD' . Weapon/Shield Icon texture2D
+
+		foreach texture2d icon, show them in HUD in the order they were in the MAIN ARRAY, 0 is before 1, 1 is before 2, etc
+			the first icon that appears is current weapon ( shows power,defense,name )
+			when another icon of another shield/weapon is selected, make brighter or less transparent, 
+			show selectedweapon.POWER and selectedweapon.DEFENSE points below icon, show selectedweapon.weapon/shieldNAME above icon
+				the back ones get more transparent and darker as they go back, layered behind eachother
+				when switching from the last ARRAY(number), go to ARRAY(0) so it loops
+				
+
+	when the selection is sleeping for 0.5 - 1.0 seconds on a S/W that is not current S/W....
+		switch to selected weapon/shield and make this weapon/shield the current weapon/shield
+			((((((current weapon - shows up brightest and first on the inventory cycle)))))
+		-SWITCHING- do player GettingWeapon/GettingShield animation/functions and 
+			make current weapon/shield the player's MyShield and MyWeapon.
+				hide inventory cycle ( fade out )
+	when the selection is sleeping for 0.5 - 1.0 seconds on a S/W that is current S/W....
+		do nothing and return
+		hide inventory cycle
+
+WHEN PLAYER HITS C OR ITEM INVENTORY KEY ( hits key again to go to next item in list)
+-check if player is alive / health is greater than 0
+	
+	look in item inventory system fro the main array var
+	get class for each item in the unlimited array slots ( potion, key, other item, etc )
+		get item ICON(texture2D), if has Name, Amount, if has MaxAmount
+	display in order, first in array to last
+	selection item is last, next item is first item in array
+		selected item will appear in the middle of all items at the top/corner 
+		brighter and bigger than the other items( will appear horizontaly)
+	if key is not pressed for 1.0 - 2.0 seconds
+		hide, fade out
+	if player presses E on selected item
+		set timer ~ 5.0 seconds to prevent overlapping key uses and potion uses
+		if selected item is a potion
+			( if heavy potion, do the slower animation )
+			increase health by potion.healthincrease
+			subtract 1 from amount of potions there, if 0 remove icon
+			
+			after use...(thrown out of hand)
+				set timer for ~3.0 seconds
+				disapear/hide
+		if selected item is a key
+			trace to key's respective keyhole(s)
+				if length is less than ( estimate example ) 300
+					do animation and do whatever the keyhole is told to do
+					set that keyhole to unlocked
+					if there are other keyholes for this key that are locked
+						keep in inventory
+					if there are no other keyholes for this key
+						remove icon, remove from inventory / destroy
+				if length is more than 300
+					do nothing
+					notify player that there is nothing to use 
+
+------------------------------------------------------------------------------------------------------------------------
+--------------------------------------- What I Want In....---------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+----------------------------------------- AI Mechanics------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+++Movement++
+- Able to be spawned out of ground or just placed
+
+- Able to walk and patrol around
+- Able to attempt to jump to get to player
+- Able to run back to a safer spot ( an actor ingame that is connected to the AI )
+- Able to be stationary in certain situations
+
+++Communication++
+- Able to do a 'Found Him' signal to notify surrounding AI ( small radius )
+
+++Combat++
+- Able to switch between bow and sword depending on the distance between this AI and player
+- Able to ignore, even out, or kill when attacked by friendly 
+- Able to use potions in inventory when needed 
+- Able to see incoming swings
+- Able to see that the player is blocking with shield or not
+- Able to speed up to get to closer to player if not an archer
+- Able to see that there are friendlies attack player
+
+++Items++
+- Able to use potions that AI has
+- When AI dies, drop the item that it has
+
+--------------------------------
+AI
+^_^_^_^_^_^_^
+level design: 
+	designers can put in an array in order of how the AI pawn walks around the map when idle.
+	node[0]
+	node[1]
+	node[2]
+	node[3]
+	node[4]
+
+	the pawn would walk 0, then 1, and then 2 and so on.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+					
+				
+	
+		
+		
+				
+
+
+	
+

@@ -1,0 +1,6 @@
+Bindings=(Name="W",Command="GBA_MoveForward | wIsPressed true | onrelease wIsPressed false")
+Bindings=(Name="A",Command="GBA_TurnLeft | aIsPressed true | onrelease aIsPressed false")
+Bindings=(Name="S",Command="GBA_Backward | sIsPressed true | onrelease sIsPressed false")
+Bindings=(Name="D",Command="GBA_TurnRight | dIsPressed true | onrelease dIsPressed false")
+Bindings=(Name="E",Command="BladeUse")
+Bindings=(Name="CapsLock",Command="ToggleCombat")
